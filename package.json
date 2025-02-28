@@ -1,0 +1,19 @@
+{
+  "name": "pinas",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "script": {
+    "test": "bun run ./test/test.ts",
+    "main": "index.ts"
+  },
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.4.1"
+  }
+}
