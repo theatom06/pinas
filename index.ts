@@ -245,6 +245,11 @@ serve({
       return new Response(Bun.randomUUIDv7(), { headers: corsHeaders });
     },
 
+    '/paperplane': new Response("Redirecting to paperplane repo", {
+      status: 301,
+      headers: { Location: "https://github.com/theatom06/paperplane" },
+    }),
+
     '/paperplane/upload/:id': {
       POST: async (req, res) => {
           if (req.method === "OPTIONS") {

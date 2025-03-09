@@ -132,7 +132,7 @@ Generate a UUID version 7.
 
 **POST** `/paperplane/upload`
 
-Uploads a project to the server according to the Paperplane project and performs the necessary steps.
+Uploads a project to the server according to the Paperplane project and performs the necessary steps. For more information, see the [Paperplane](https://github.com/theatom06/paperplane) project.
 
 ## License
 
