@@ -45,6 +45,8 @@ This project was created using `bun init` in bun v1.2.3. [Bun](https://bun.sh) i
 - **Echo Message**: Echo a message.
 - **Hello World**: Return a "Hello, World!" message.
 - **Get Logs**: Get the server logs.
+- **UUID**: Generate a UUID.
+- **Paperplane**: Contains the server code for the Paperplane project.
 
 ## API Endpoints
 
@@ -119,3 +121,19 @@ Return a "Hello, World!" message.
 **GET** `/log`
 
 Get the server logs.
+
+### UUID
+
+**GET** `/uuid`
+
+Generate a UUID version 7.
+
+### Paperplane
+
+**POST** `/paperplane/upload`
+
+Uploads a project to the server according to the Paperplane project and performs the necessary steps.
+
+## License
+
+This project is under the MIT License. See the [LICENSE](LICENSE) file for the full license text.

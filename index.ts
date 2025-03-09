@@ -5,7 +5,7 @@ import chalk from "chalk";
 
 const root = join(import.meta.dir, "drive");
 const logDir = join(import.meta.dir, "logs");
-const PORT = Bun.env.PORT || 3000;
+const PORT = Bun.env.PORT || 5106;
 
 if (!(await exists(root))) {
   await mkdir(root, { recursive: true });
@@ -234,7 +234,48 @@ serve({
       log(chalk.white.bgGray` Log ` + ` from ${req.headers.get("User-Agent")}`);
       const logContent = await Bun.file(logFilePath).text();
       return new Response(logContent, { headers: corsHeaders });
-    }
+    },
+
+    "/uuid": async (req) => {
+      if (req.method === "OPTIONS") {
+        return new Response(null, { headers: corsHeaders });
+      }
+
+      log(chalk.white.bgGreen` UUID ` + ` from ${req.headers.get("User-Agent")}`);
+      return new Response(Bun.randomUUIDv7(), { headers: corsHeaders });
+    },
+
+    '/paperplane/upload/:id': {
+      POST: async (req, res) => {
+          if (req.method === "OPTIONS") {
+              return new Response(null, { headers: corsHeaders });
+          }
+
+          log(chalk.white.bgYellow` Paperplane ` + ` ${req.params.id} from ${req.headers.get("User-Agent")}`);
+
+          const tarName = req.params.id;
+          const folder = tarName.replace(".tar", "");
+
+          try {
+            await Bun.file(tarName).write(await req.text());
+            await Bun.$`tar -xf ${tarName}`.quiet().catch(console.error)
+            await Bun.$`chmod +x ${folder}/deploy.sh`.quiet().catch(console.error);
+            const reponse = await Bun.$`cd ${folder} && sh ./deploy.sh`.text()
+  
+            return new Response(JSON.stringify({ message: "Project deployed successfully", response: reponse }), {
+                headers: corsHeaders,
+            });
+          } catch (error) {
+            console.error(error);
+            return new Response(JSON.stringify({ message: "Failed to deploy project", error: JSON.stringify(error) }), {
+                status: 500,
+                headers: corsHeaders,
+            });
+          } finally {
+              await Bun.$`rm ${tarName}`.quiet().catch(console.error);
+          }
+      }
+  }
   },
 
   fetch(req) {
